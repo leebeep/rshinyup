@@ -1,0 +1,54 @@
+
+proxy:
+  title: 有度数据中心平台
+  port: 1688
+  authentication: simple
+  users:
+  - name: 广分
+    password: 1688
+    groups: admins
+  - name: baidu
+    password: 1688
+    groups: cf
+  - name: La
+    password: 1688
+    groups: LA
+ 
+  docker:
+    url: http://localhost:2375
+  specs:
+  - id: 01_hello
+    display-name: 深海九章公司业绩监控日报
+    description:  R语言写的Web APP,服务于公司业务监控
+    container-cmd: ["R", "-e", "shinyproxy::run_01_hello()"]
+    container-image: openanalytics/shinyproxy-demo
+    access-groups: [admins, cf,LA]
+  - id: r-my
+    display-name: 深海九章公司客户画像平台
+    description:  R语言写的Web APP,服务于公司运营客户画像策略
+    container-cmd: ["R", "-e", "shiny::runApp('/root/euler')"]
+    container-image: openanalytics/r-my
+    access-groups: [admins, cf,LA]
+  - id: 06_tabsets
+    display-name: 深海九章公司销售部报告
+    description:  R语言写的Web APP,服务于公司销售部报告
+    container-cmd: ["R", "-e", "shinyproxy::run_06_tabsets()"]
+    container-image: openanalytics/shinyproxy-demo
+    access-groups: [cf]
+  - id: 07_dashdemo
+    display-name: 深海九章公司市场数据可视化-糖见
+    description: Python写的Web APP,服务于市场部数据可视化和预测
+    container-cmd: ["python", "app.py"]
+    container-image: openanalytics/pydash 
+
+  - id: flaskapp
+    display-name: 深海九章公司管理层早报
+    description: Python写的Web APP,服务于公司管理层洞悉业务数据
+    container-cmd: ["python","app.py"]
+    container-image: openanalytics/flaskapp
+
+
+    
+logging:
+  file:
+    shinyproxy.log
